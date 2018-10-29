@@ -29,14 +29,17 @@ public class BlockDetector extends OpenCVPipeline{
                 double contourArea = Imgproc.contourArea(contours.get(contourIdx));
                 if (maxVal < contourArea) {
                     maxVal = contourArea;
-                    maxValIdx = contourIdx; 
+                    maxValIdx = contourIdx;
                 }
             }
 
             Rect boundingRect = Imgproc.boundingRect(contours.get(maxValIdx));
             Imgproc.cvtColor(rgba, rgba, Imgproc.COLOR_HSV2RGB);
             Imgproc.rectangle(rgba, boundingRect.tl(),boundingRect.br(),new Scalar (255, 0, 0), 3);
+        }else{
+            Imgproc.cvtColor(rgba, rgba, Imgproc.COLOR_HSV2RGB);
         }
+
         return rgba;
     }
 
