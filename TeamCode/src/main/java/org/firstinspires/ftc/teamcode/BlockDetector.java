@@ -17,6 +17,7 @@ public class BlockDetector extends OpenCVPipeline{
     @Override
     public Mat processFrame(Mat rgba, Mat gray){
         Mat hsv = rgba;
+        int minArea = 100;
         Imgproc.cvtColor(rgba, hsv, Imgproc.COLOR_RGB2HSV);
         Mat threshold = gray;
         Core.inRange(hsv, new Scalar(6, 154, 94), new Scalar(59, 255, 255), threshold);
@@ -25,10 +26,12 @@ public class BlockDetector extends OpenCVPipeline{
         if(contours.size()>0) {
             double maxVal = 0;
             int maxValIdx = -1;
+
             for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++) {
-                double contourArea = Imgproc.contourArea(contours.get(contourIdx));
-                if (maxVal < contourArea) {
-                    maxVal = contourArea;
+                double yVal = Imgproc.boundingRect(contours.get(contourIdx)).y;
+
+                if((maxVal < yVal) && Imgproc.contourArea(contours.get(contourIdx)) > minArea){
+                    maxVal = yVal;
                     maxValIdx = contourIdx;
                 }
             }
