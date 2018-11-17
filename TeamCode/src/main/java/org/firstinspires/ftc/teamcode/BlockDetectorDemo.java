@@ -22,6 +22,6 @@ public class BlockDetectorDemo extends OpMode{
     }
 
     public void loop(){
-
+        telemetry.addData("minY" , detector.y);
     }
 }
